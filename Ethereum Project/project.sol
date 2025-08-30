@@ -38,6 +38,9 @@ contract CriptoGive {
     event PhaseChangeRequested(uint256 indexed projectId, ProjectPhase newPhase);
     event PhaseChanged(uint256 indexed projectId, ProjectPhase newPhase);
     event ApprovalAdded(uint256 indexed projectId, address indexed approver, uint256 approvalCount);
+    event DonationReceived(uint256 indexed projectId, address indexed donor, uint256 amount);
+    event FundsWithdrawn(uint256 indexed projectId, address indexed owner, uint256 amount);
+
 
     function registerUser(Role _role) public {
         require(users[msg.sender].wallet == address(0), "Ya registrado");
@@ -110,7 +113,35 @@ contract CriptoGive {
         return projects[_projectId].phase;
     }
 
+
     function hasApprovedPhaseChange(uint256 _projectId, address _user) public view returns (bool) {
         return projects[_projectId].approvals[_user];
     }
+
+    function donate(uint256 _projectId) public payable {
+    Project storage project = projects[_projectId];
+    require(users[msg.sender].role == Role.Donante, "Solo donantes pueden donar");
+    require(project.isActive, "Proyecto no activo");
+    require(msg.value > 0, "Debes donar mas de 0");
+
+    project.fundsRaised += msg.value;
+
+    emit DonationReceived(_projectId, msg.sender, msg.value);
+    }
+
+    function withdrawFunds(uint256 _projectId) public {
+    Project storage project = projects[_projectId];
+    require(msg.sender == project.owner, "Solo el owner puede retirar fondos");
+    require(project.phase == ProjectPhase.Finalizada, "El proyecto debe estar en fase finalizada");
+    require(project.approvalCount >= REQUIRED_APPROVALS, "No hay suficientes aprobaciones");
+    require(project.fundsRaised > 0, "No hay fondos para retirar");
+
+    uint256 amount = project.fundsRaised;
+    project.fundsRaised = 0;
+
+    payable(project.owner).transfer(amount);
+
+    emit FundsWithdrawn(_projectId, project.owner, amount);
+    }
+
 }
