@@ -1,11 +1,21 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
-contract MyContract {
-    enum Role {None, Auditor, Donante, Organizacion}
+contract CriptoGive {
+    enum Role {None,Auditor, Donante, Organizacion}
 
     struct User{
         address wallet;
         Role role;
+    }
+    struct projects {
+        string name;
+        address owner;
+        uint goal;
+        string description;
+        string beneficiary;
+        bool isActive;
+        string image;
+        bool typeProject;
     }
 
     mapping(address => User) public users;
@@ -20,7 +30,12 @@ contract MyContract {
         return users[msg.sender].role;
     }
 
+    function getUserInfo() public view returns (address, Role) {
+        require(users[msg.sender].role != Role.None, "No registrado");
+        return (users[msg.sender].wallet, users[msg.sender].role);
+    }
     
+
 
 }   
 
