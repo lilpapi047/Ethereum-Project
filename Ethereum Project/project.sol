@@ -85,7 +85,7 @@ contract CriptoGive {
         string memory _location,
         string memory _email
     ) public {
-        require(!isDonant[msg.sender] && !isONG[msg.sender], "Usuario ya registrado");
+        require(!isDonant[msg.sender] && !isONG[msg.sender], "ONG ya registrada");
         
         isONG[msg.sender] = true;
         ongs[msg.sender] = ONG(msg.sender, _name, _description, _RTN, _location, _email);
