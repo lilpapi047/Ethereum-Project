@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 contract CriptoGive {
     enum Role { None, Auditor, Donante, Organizacion }
     enum ProjectType { Temporal, Perpetuo }
+    enum ProjectPhase { Inicial, Intermedia, Finalizada }
 
     struct User {
         address wallet;
@@ -20,17 +21,23 @@ contract CriptoGive {
         string image;
         ProjectType projectType;
         uint256 fundsRaised;
+        ProjectPhase phase;
+        uint256 approvalCount;
+        mapping(address => bool) approvals;
     }
 
     mapping(address => User) public users;
     mapping(uint256 => Project) public projects;
-    mapping(address => uint256[]) public OrganizationProjects;
+    mapping(address => uint256[]) public organizationProjects;
 
     uint256 public projectCount;
     uint256 public activeProjectCount;
+    uint256 public constant REQUIRED_APPROVALS = 3;
 
-    // Evento para notificar la creación de un proyecto (opcional pero recomendado)
     event ProjectCreated(uint256 indexed projectId, address indexed owner, string name);
+    event PhaseChangeRequested(uint256 indexed projectId, ProjectPhase newPhase);
+    event PhaseChanged(uint256 indexed projectId, ProjectPhase newPhase);
+    event ApprovalAdded(uint256 indexed projectId, address indexed approver, uint256 approvalCount);
 
     function registerUser(Role _role) public {
         require(users[msg.sender].wallet == address(0), "Ya registrado");
@@ -42,7 +49,6 @@ contract CriptoGive {
         return (users[msg.sender].wallet, users[msg.sender].role);
     }
 
-    // Función para crear un nuevo proyecto
     function createProject(
         string memory _name,
         string memory _description,
@@ -50,32 +56,61 @@ contract CriptoGive {
         string memory _image,
         ProjectType _projectType
     ) public {
-        // Verificar que el caller es una organización
         require(users[msg.sender].role == Role.Organizacion, "Solo organizaciones pueden crear proyectos");
 
-        // Incrementar el contador de proyectos
         projectCount++;
         
-        // Crear el proyecto
-        projects[projectCount] = Project({
-            id: projectCount,
-            name: _name,
-            owner: msg.sender,
-            description: _description,
-            beneficiary: _beneficiary,
-            isActive: true,
-            image: _image,
-            projectType: _projectType,
-            fundsRaised: 0
-        });
+        Project storage newProject = projects[projectCount];
+        newProject.id = projectCount;
+        newProject.name = _name;
+        newProject.owner = msg.sender;
+        newProject.description = _description;
+        newProject.beneficiary = _beneficiary;
+        newProject.isActive = true;
+        newProject.image = _image;
+        newProject.projectType = _projectType;
+        newProject.fundsRaised = 0;
+        newProject.phase = ProjectPhase.Inicial;
+        newProject.approvalCount = 0;
 
-        // Añadir el proyecto a la lista de la organización
-        OrganizationProjects[msg.sender].push(projectCount);
-
-        // Incrementar el contador de proyectos activos
+        organizationProjects[msg.sender].push(projectCount);
         activeProjectCount++;
 
-        // Emitir evento
         emit ProjectCreated(projectCount, msg.sender, _name);
+    }
+
+    function requestPhaseChange(uint256 _projectId, ProjectPhase _newPhase) public {
+        Project storage project = projects[_projectId];
+        require(project.owner == msg.sender, "Solo el owner puede cambiar fase");
+        require(_newPhase > project.phase, "Nueva fase debe ser posterior");
+        require(_newPhase <= ProjectPhase.Finalizada, "Fase no valida");
+
+        project.approvalCount = 0;
+        
+        emit PhaseChangeRequested(_projectId, _newPhase);
+    }
+
+    function approvePhaseChange(uint256 _projectId) public {
+        Project storage project = projects[_projectId];
+        require(users[msg.sender].role == Role.Donante, "Solo donantes pueden aprobar");
+        require(!project.approvals[msg.sender], "Ya aprobaste este cambio");
+
+        project.approvals[msg.sender] = true;
+        project.approvalCount++;
+
+        emit ApprovalAdded(_projectId, msg.sender, project.approvalCount);
+
+        if (project.approvalCount >= REQUIRED_APPROVALS) {
+            project.phase = ProjectPhase(uint(project.phase) + 1);
+            emit PhaseChanged(_projectId, project.phase);
+        }
+    }
+
+    function getProjectPhase(uint256 _projectId) public view returns (ProjectPhase) {
+        return projects[_projectId].phase;
+    }
+
+    function hasApprovedPhaseChange(uint256 _projectId, address _user) public view returns (bool) {
+        return projects[_projectId].approvals[_user];
     }
 }
