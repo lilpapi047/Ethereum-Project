@@ -2,13 +2,22 @@
 pragma solidity ^0.8.0;
 
 contract CriptoGive {
-    enum Role { None, Auditor, Donante, Organizacion }
+    
     enum ProjectType { Temporal, Perpetuo }
     enum ProjectPhase { Inicial, Intermedia, Finalizada }
 
-    struct User {
+    struct Donant {
         address wallet;
-        Role role;
+        string name;
+    }
+    
+    struct ONG {
+        address wallet;
+        string name;
+        string description;
+        uint16 RTN;
+        string location;
+        string email;
     }
 
     struct Project {
@@ -26,41 +35,83 @@ contract CriptoGive {
         mapping(address => bool) approvals;
     }
 
-    mapping(address => User) public users;
+    
+    mapping(address => bool) public isDonant;
+    mapping(address => bool) public isONG;
+    mapping(address => Donant) public donants;
+    mapping(address => ONG) public ongs;
     mapping(uint256 => Project) public projects;
     mapping(address => uint256[]) public organizationProjects;
 
+    
     uint256 public projectCount;
     uint256 public activeProjectCount;
     uint256 public constant REQUIRED_APPROVALS = 3;
 
+    
+    event DonantRegistered(address indexed wallet, string name);
+    event ONGRegistered(address indexed wallet, string name);
     event ProjectCreated(uint256 indexed projectId, address indexed owner, string name);
     event PhaseChangeRequested(uint256 indexed projectId, ProjectPhase newPhase);
     event PhaseChanged(uint256 indexed projectId, ProjectPhase newPhase);
     event ApprovalAdded(uint256 indexed projectId, address indexed approver, uint256 approvalCount);
-    event DonationReceived(uint256 indexed projectId, address indexed donor, uint256 amount);
-    event FundsWithdrawn(uint256 indexed projectId, address indexed owner, uint256 amount);
 
-
-    function registerUser(Role _role) public {
-        require(users[msg.sender].wallet == address(0), "Ya registrado");
-        users[msg.sender] = User(msg.sender, _role);
+    
+    modifier onlyDonant() {
+        require(isDonant[msg.sender], "Solo donantes pueden realizar esta accion");
+        _;
     }
 
-    function getUserInfo() public view returns (address, Role) {
-        require(users[msg.sender].role != Role.None, "No registrado");
-        return (users[msg.sender].wallet, users[msg.sender].role);
+
+    modifier onlyONG() {
+        require(isONG[msg.sender], "Solo ONGs pueden realizar esta accion");
+        _;
     }
 
+    
+    function registerDonant(string memory _name) public {
+        require(!isDonant[msg.sender] && !isONG[msg.sender], "Usuario ya registrado");
+        
+        isDonant[msg.sender] = true;
+        donants[msg.sender] = Donant(msg.sender, _name);
+        
+        emit DonantRegistered(msg.sender, _name);
+    }
+
+    function registerONG(
+        string memory _name,
+        string memory _description,
+        uint16 _RTN,
+        string memory _location,
+        string memory _email
+    ) public {
+        require(!isDonant[msg.sender] && !isONG[msg.sender], "Usuario ya registrado");
+        
+        isONG[msg.sender] = true;
+        ongs[msg.sender] = ONG(msg.sender, _name, _description, _RTN, _location, _email);
+        
+        emit ONGRegistered(msg.sender, _name);
+    }
+
+    
+    function getUserInfo(address _user) public view returns (string memory userType, string memory name) {
+        if (isDonant[_user]) {
+            return ("Donante", donants[_user].name);
+        } else if (isONG[_user]) {
+            return ("ONG", ongs[_user].name);
+        } else {
+            return ("No registrado", "");
+        }
+    }
+
+    
     function createProject(
         string memory _name,
         string memory _description,
         string memory _beneficiary,
         string memory _image,
         ProjectType _projectType
-    ) public {
-        require(users[msg.sender].role == Role.Organizacion, "Solo organizaciones pueden crear proyectos");
-
+    ) public onlyONG {
         projectCount++;
         
         Project storage newProject = projects[projectCount];
@@ -82,6 +133,7 @@ contract CriptoGive {
         emit ProjectCreated(projectCount, msg.sender, _name);
     }
 
+
     function requestPhaseChange(uint256 _projectId, ProjectPhase _newPhase) public {
         Project storage project = projects[_projectId];
         require(project.owner == msg.sender, "Solo el owner puede cambiar fase");
@@ -93,9 +145,9 @@ contract CriptoGive {
         emit PhaseChangeRequested(_projectId, _newPhase);
     }
 
-    function approvePhaseChange(uint256 _projectId) public {
+    
+    function approvePhaseChange(uint256 _projectId) public onlyDonant {
         Project storage project = projects[_projectId];
-        require(users[msg.sender].role == Role.Donante, "Solo donantes pueden aprobar");
         require(!project.approvals[msg.sender], "Ya aprobaste este cambio");
 
         project.approvals[msg.sender] = true;
@@ -109,39 +161,13 @@ contract CriptoGive {
         }
     }
 
+    
     function getProjectPhase(uint256 _projectId) public view returns (ProjectPhase) {
         return projects[_projectId].phase;
     }
 
-
+    
     function hasApprovedPhaseChange(uint256 _projectId, address _user) public view returns (bool) {
         return projects[_projectId].approvals[_user];
     }
-
-    function donate(uint256 _projectId) public payable {
-    Project storage project = projects[_projectId];
-    require(users[msg.sender].role == Role.Donante, "Solo donantes pueden donar");
-    require(project.isActive, "Proyecto no activo");
-    require(msg.value > 0, "Debes donar mas de 0");
-
-    project.fundsRaised += msg.value;
-
-    emit DonationReceived(_projectId, msg.sender, msg.value);
-    }
-
-    function withdrawFunds(uint256 _projectId) public {
-    Project storage project = projects[_projectId];
-    require(msg.sender == project.owner, "Solo el owner puede retirar fondos");
-    require(project.phase == ProjectPhase.Finalizada, "El proyecto debe estar en fase finalizada");
-    require(project.approvalCount >= REQUIRED_APPROVALS, "No hay suficientes aprobaciones");
-    require(project.fundsRaised > 0, "No hay fondos para retirar");
-
-    uint256 amount = project.fundsRaised;
-    project.fundsRaised = 0;
-
-    payable(project.owner).transfer(amount);
-
-    emit FundsWithdrawn(_projectId, project.owner, amount);
-    }
-
 }
