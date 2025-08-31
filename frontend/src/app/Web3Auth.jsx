@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { useAccount } from 'wagmi'
 import { useAuth } from '../hooks/useAuth'
 import AuthenticationFlow from '../components/AuthenticationFlow'
-import AuthenticationFlowDemo from '../components/AuthenticationFlowDemo'
 import { ArrowLeft, Shield } from 'lucide-react'
 
 export default function Web3Auth() {
@@ -35,7 +34,7 @@ export default function Web3Auth() {
         </div>
 
         {/* Authentication Flow */}
-        <AuthenticationFlowDemo />
+        <AuthenticationFlow />
 
         {/* Instructions */}
         <div className="mt-8 p-4 bg-white border border-gray-200 rounded-lg">
