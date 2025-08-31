@@ -10,6 +10,7 @@ import DetallesProyecto from './app/ONG/DetallesProyecto'
 import AgregarProyecto from './app/ONG/AgregarProyecto'
 import ProyectosONG from './app/Donante/DashboardProyectos'
 import DetallesProyectoDonante from './app/Donante/DetallesProyectoDonante'
+import Donacion from './app/Donante/Donacion'
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -23,6 +24,7 @@ createRoot(document.getElementById('root')).render(
       <Route path="/agregar-proyecto/:id" element={<AgregarProyecto />} />
       <Route path="/proyectoDonante/:id" element={<ProyectosONG  />} />
       <Route path="/proyecto/:id" element={<DetallesProyectoDonante />} />
+      <Route path="/donacion/:id" element={<Donacion />} />
     </Routes>
   </BrowserRouter>
 );
