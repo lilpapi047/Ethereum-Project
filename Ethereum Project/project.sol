@@ -5,7 +5,7 @@ contract CriptoGive {
     
     enum ProjectType { Temporal, Perpetuo }
     enum ProjectPhase { Inicial, Intermedia, Finalizada }
-
+        //Estructuras
     struct Donant {
         address wallet;
         string name;
@@ -26,6 +26,7 @@ contract CriptoGive {
         address owner;
         string description;
         string beneficiary;
+        uint256 goal;
         bool isActive;
         string image;
         ProjectType projectType;
@@ -35,7 +36,7 @@ contract CriptoGive {
         mapping(address => bool) approvals;
     }
 
-    
+    // Mappings para usuarios y proyectos
     mapping(address => bool) public isDonant;
     mapping(address => bool) public isONG;
     mapping(address => Donant) public donants;
@@ -43,20 +44,20 @@ contract CriptoGive {
     mapping(uint256 => Project) public projects;
     mapping(address => uint256[]) public organizationProjects;
 
-    
+    //variables
     uint256 public projectCount;
     uint256 public activeProjectCount;
     uint256 public constant REQUIRED_APPROVALS = 3;
 
-    
+    //eventos
     event DonantRegistered(address indexed wallet, string name);
     event ONGRegistered(address indexed wallet, string name);
     event ProjectCreated(uint256 indexed projectId, address indexed owner, string name);
     event PhaseChangeRequested(uint256 indexed projectId, ProjectPhase newPhase);
     event PhaseChanged(uint256 indexed projectId, ProjectPhase newPhase);
     event ApprovalAdded(uint256 indexed projectId, address indexed approver, uint256 approvalCount);
-
     
+    event DonationMade(uint256 indexed projectId, address indexed donor, uint256 amount);
     modifier onlyDonant() {
         require(isDonant[msg.sender], "Solo donantes pueden realizar esta accion");
         _;
@@ -110,7 +111,8 @@ contract CriptoGive {
         string memory _description,
         string memory _beneficiary,
         string memory _image,
-        ProjectType _projectType
+        ProjectType _projectType,
+        uint256 _goal // Agrega este parámetro
     ) public onlyONG {
         projectCount++;
         
@@ -124,6 +126,7 @@ contract CriptoGive {
         newProject.image = _image;
         newProject.projectType = _projectType;
         newProject.fundsRaised = 0;
+        newProject.goal = _goal; // Establece la meta
         newProject.phase = ProjectPhase.Inicial;
         newProject.approvalCount = 0;
 
@@ -170,4 +173,28 @@ contract CriptoGive {
     function hasApprovedPhaseChange(uint256 _projectId, address _user) public view returns (bool) {
         return projects[_projectId].approvals[_user];
     }
+    function deposit(uint256 _projectId) public payable {
+    require(msg.value > 0, "El monto debe ser mayor que cero");
+    
+    // Accede al proyecto
+    Project storage project = projects[_projectId];
+    require(project.isActive, "El proyecto no esta activo");
+    
+    // Incrementa fundsRaised
+    project.fundsRaised += msg.value;
+    uint256 temp = project.fundsRaised;
+    require(temp <= project.goal, "El monto supera la meta del proyecto");
+
+    // Envía los fondos a la ONG dueña del proyecto
+    (bool success, ) = project.owner.call{value: msg.value}("");
+    require(success, "Error al enviar fondos a la ONG");
+    
+    // Emite evento de donación
+    emit DonationMade(_projectId, msg.sender, msg.value);
+}
+function withdraw(uint256 amount) public onlyONG {
+    address payable recipient = payable(msg.sender);
+    (bool sent, bytes memory data) = recipient.call{value: amount}("");
+}
+
 }
