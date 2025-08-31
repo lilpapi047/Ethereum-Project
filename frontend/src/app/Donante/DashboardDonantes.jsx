@@ -8,7 +8,7 @@ export default function DashboardDonantes(){
     {
       id: 1,
       name: "Cruz Roja Internacional",
-      image: "/cruz-roja-logo.png",
+      image: "/img/cruz-roja-logo.png",
       description: "Ayuda humanitaria mundial",
       projectsCount: 12,
 
@@ -16,28 +16,28 @@ export default function DashboardDonantes(){
     {
       id: 2,
       name: "UNICEF",
-      image: "/unicef-logo.png",
+      image: "/img/unicef-logo.png",
       description: "Protección de la infancia",
       projectsCount: 8,
     },
     {
       id: 3,
       name: "Médicos Sin Fronteras",
-      image: "/medicos-sin-fronteras-logo.png",
+      image: "/img/medicos-sin-fronteras-logo.png",
       description: "Atención médica de emergencia",
       projectsCount: 15,
     },
     {
       id: 4,
       name: "WWF",
-      image: "/wwf-panda-logo.png",
+      image: "/img/wwf-panda-logo.png",
       description: "Conservación del medio ambiente",
       projectsCount: 6,
     },
     {
       id: 5,
       name: "Oxfam",
-      image: "/oxfam-logo.png",
+      image: "/img/oxfam-logo.png",
       description: "Lucha contra la pobreza",
       projectsCount: 10,
     },
