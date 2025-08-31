@@ -49,7 +49,7 @@ contract CriptoGive {
 
     // Saldos y aportes
     mapping(uint256 => uint256) public projectBalance;
-    // NUEVO: cuánto donó cada address a cada proyecto
+    //  cuánto donó cada address a cada proyecto
     mapping(uint256 => mapping(address => uint256)) public contributions;
 
     // Contadores y parámetros
@@ -160,7 +160,7 @@ contract CriptoGive {
 
         emit DonationMade(_projectId, msg.sender, msg.value);
 
-        // (Opcional) desactivar donaciones cuando alcance la meta
+        // desactivar donaciones cuando alcance la meta
         if (p.fundsRaised == p.goal) {
             p.isActive = false;
         }
@@ -214,8 +214,6 @@ contract CriptoGive {
     function unlockedAmount(uint256 _projectId) public view returns (uint256) {
         Project storage p = projects[_projectId];
         uint256 bps = _cumulativeUnlockBps(p.phase);
-        // Desbloqueo se calcula sobre la meta (goal) alcanzada
-        // Si prefieres sobre fundsRaised, cambia p.goal por p.fundsRaised
         uint256 maxUnlock = (p.goal * bps) / 10000;
         if (maxUnlock > p.fundsRaised) {
             // Seguridad: nunca más de lo realmente recaudado
