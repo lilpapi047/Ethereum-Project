@@ -12,7 +12,7 @@ export default function StatsSection() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="bg-div border-border">
             <div className="p-6 text-center">
-              <div className="text-3xl font-bold text-primary mb-2">$2.5M+</div>
+              <div className="text-3xl font-bold text-primary mb-2">2,500+ ETH</div>
               <div className="text-muted-foreground">Donado en Total</div>
             </div>
           </div>

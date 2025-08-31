@@ -203,7 +203,7 @@ export default function DashboardONG() {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Recaudado</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  ${projects.reduce((sum, project) => sum + project.currentRaised, 0).toLocaleString()}
+                  {projects.reduce((sum, project) => sum + project.currentRaised, 0).toLocaleString()} ETH
                 </p>
               </div>
             </div>
@@ -307,11 +307,11 @@ export default function DashboardONG() {
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
                         <p className="text-gray-600">Recaudado</p>
-                        <p className="font-semibold text-gray-900">${project.currentRaised.toLocaleString()}</p>
+                        <p className="font-semibold text-gray-900">{project.currentRaised.toLocaleString()} ETH</p>
                       </div>
                       <div>
                         <p className="text-gray-600">Meta</p>
-                        <p className="font-semibold text-gray-900">${project.totalGoal.toLocaleString()}</p>
+                        <p className="font-semibold text-gray-900">{project.totalGoal.toLocaleString()} ETH</p>
                       </div>
                       <div>
                         <p className="text-gray-600">Donantes</p>

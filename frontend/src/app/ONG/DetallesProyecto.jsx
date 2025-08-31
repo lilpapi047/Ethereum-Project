@@ -265,11 +265,11 @@ export default function DetallesProyecto() {
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-emerald-600">${project.raised.toLocaleString()}</div>
+                  <div className="text-2xl font-bold text-emerald-600">{project.raised.toLocaleString()} ETH</div>
                   <div className="text-sm text-gray-600">Recaudado</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900">${project.goal.toLocaleString()}</div>
+                  <div className="text-2xl font-bold text-gray-900">{project.goal.toLocaleString()} ETH</div>
                   <div className="text-sm text-gray-600">Meta Total</div>
                 </div>
                 <div className="text-center">
@@ -292,7 +292,7 @@ export default function DetallesProyecto() {
                 ></div>
               </div>
               <div className="text-sm text-gray-600 text-center">
-                ${project.raised.toLocaleString()} de ${project.goal.toLocaleString()}
+                {project.raised.toLocaleString()} ETH de {project.goal.toLocaleString()} ETH
               </div>
             </div>
           </div>
@@ -351,7 +351,7 @@ export default function DetallesProyecto() {
                       ></div>
                     </div>
                     <div className="text-sm text-gray-600">
-                      ${phase.raised.toLocaleString()} de ${phase.goal.toLocaleString()}
+                      {phase.raised.toLocaleString()} ETH de {phase.goal.toLocaleString()} ETH
                     </div>
                   </div>
 

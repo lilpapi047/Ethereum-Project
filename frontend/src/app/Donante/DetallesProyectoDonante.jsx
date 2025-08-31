@@ -324,11 +324,11 @@ export default function DetallesProyectoDonante() {
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-emerald-600">${project.recaudado.toLocaleString()}</div>
+                  <div className="text-2xl font-bold text-emerald-600">{project.recaudado.toLocaleString()} ETH</div>
                   <div className="text-sm text-gray-600">Recaudado</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900">${project.meta.toLocaleString()}</div>
+                  <div className="text-2xl font-bold text-gray-900">{project.meta.toLocaleString()} ETH</div>
                   <div className="text-sm text-gray-600">Meta</div>
                 </div>
                 <div className="text-center">
@@ -462,7 +462,7 @@ export default function DetallesProyectoDonante() {
                   {Math.round((project.recaudado / project.meta) * 100)}%
                 </span>
                 <div className="text-sm text-gray-600">
-                  ${project.recaudado.toLocaleString()} de ${project.meta.toLocaleString()}
+                  {project.recaudado.toLocaleString()} ETH de {project.meta.toLocaleString()} ETH
                 </div>
               </div>
             </div>
