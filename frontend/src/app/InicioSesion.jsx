@@ -44,14 +44,16 @@ export default function InicioSesion() {
       try {
         console.log("Iniciando sesión como:", userType, formData)
 
-        await new Promise((resolve) => setTimeout(resolve, 1000))
+        // Usar la dirección de billetera como identificador único
+        const userWalletAddress = formData.wallet
 
         if (userType === "organization") {
-          navigate("/dashboardONG/${org.id}")
+          navigate(`/dashboardONG/${userWalletAddress}`)
         } else {
-          navigate("/dashboardDonantes/${donor.id}")
+          navigate(`/dashboardDonantes/${userWalletAddress}`)
         }
       } catch (error) {
+        console.error("Error durante el inicio de sesión:", error)
         setErrors({ general: "Error al iniciar sesión. Intenta nuevamente." })
       }
     }

@@ -72,7 +72,7 @@ export default function ProyectosONG() {
 
   const handleVerDetalle = (proyecto) => {
     // Navegar a la página de detalle del proyecto
-    navigate(`/proyecto/${proyecto.id}`, { state: { proyecto } })
+    navigate(`/proyecto/${proyecto.id}`)
   }
 
 
@@ -83,13 +83,13 @@ export default function ProyectosONG() {
         {/* Header */}
         <div className="mb-8">
             <button
-                onClick={() => navigate("/dashboardDonantes/${org.id}")}
+                onClick={() => navigate("/")}
                 className="text-gray-600 hover:text-gray-900 flex items-center"
               >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
                 </svg>
-                Volver al Dashboard
+                Volver al Inicio
             </button>
             <h1 className="text-4xl font-bold text-gray-900 mb-2">Proyectos de la ONG</h1>
             <p className="text-gray-600 text-lg">Gestiona y visualiza todos los proyectos de nuestra organización</p>
