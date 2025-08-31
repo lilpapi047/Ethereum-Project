@@ -11,6 +11,7 @@ export default function DashboardDonantes(){
       image: "/cruz-roja-logo.png",
       description: "Ayuda humanitaria mundial",
       projectsCount: 12,
+
     },
     {
       id: 2,
@@ -50,7 +51,7 @@ export default function DashboardDonantes(){
   ]
 
   const handleOrganizationClick = (organizationId) => {
-    navigate(`/projects/${organizationId}`)
+    navigate(`/proyectoDonante/${organizationId}`)
   }
 
   return (
@@ -78,8 +79,6 @@ export default function DashboardDonantes(){
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {organizations.map((org) => (
             <div
-              key={org.id}
-              onClick={() => handleOrganizationClick(org.id)}
               className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer transform hover:-translate-y-1 border border-gray-200"
             >
               {/* Image */}
@@ -105,7 +104,10 @@ export default function DashboardDonantes(){
                     </svg>
                     {org.projectsCount} proyectos
                   </div>
-                  <div className="text-emerald-600 font-medium text-sm">Ver proyectos →</div>
+                  <div 
+                  key={org.id}
+                  onClick={() => handleOrganizationClick(org.id)}
+                  className="text-emerald-600 font-medium text-sm rounded-sm p-1 hover:bg-gray-100 hover:font-bold transition-colors">Ver proyectos →</div>
                 </div>
               </div>
             </div>

@@ -7,6 +7,7 @@ import InicioSesion from './app/InicioSesion'
 import DashboardDonantes from './app/Donante/DashboardDonantes'
 import DashboardONG from './app/ONG/DashboardONG'
 import DetallesProyecto from './app/ONG/DetallesProyecto'
+import ProyectosONG from './app/Donante/DashboardProyectos'
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -17,6 +18,7 @@ createRoot(document.getElementById('root')).render(
       <Route path="/dashboardDonantes/:id" element={<DashboardDonantes  />} />
       <Route path="/dashboardONG/:id" element={<DashboardONG />} />
       <Route path="/proyecto/:id" element={<DetallesProyecto />} />
+      <Route path="/proyectoDonante/:id" element={<ProyectosONG  />} />
     </Routes>
   </BrowserRouter>
 );
