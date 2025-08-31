@@ -1,6 +1,6 @@
 import { http, createConfig } from 'wagmi'
 import { sepolia, goerli } from 'wagmi/chains'
-import { metaMask } from 'wagmi/connectors'
+import { getDefaultConfig } from '@rainbow-me/rainbowkit'
 
 // Contract configuration
 export const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS || '0xce715b667569A1294940e102FEeb001E3312681c'
@@ -65,15 +65,14 @@ export const CONTRACT_ABI = [
   }
 ]
 
-// Wagmi configuration
-export const config = createConfig({
+// RainbowKit configuration
+export const config = getDefaultConfig({
+  appName: 'Donation Platform',
+  projectId: 'YOUR_WALLETCONNECT_PROJECT_ID', // Get from https://cloud.walletconnect.com
   chains: [sepolia, goerli],
-  connectors: [
-    metaMask()
-    // Removed WalletConnect to avoid conflicts
-  ],
   transports: {
     [sepolia.id]: http(`https://sepolia.infura.io/v3/2a6ff129c08a4138b15d224c7ebd2548`),
-    [goerli.id]: http(`https://goerli.infura.io/v3/2a6ff129c08a4138b15d224c7ebd2548`)
-  }
+    [goerli.id]: http(`https://sepolia.infura.io/v3/2a6ff129c08a4138b15d224c7ebd2548`)
+  },
+  ssr: false // Disable server-side rendering for Vite
 })
