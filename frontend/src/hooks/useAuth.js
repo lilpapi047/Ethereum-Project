@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAccount, useReadContract, useWriteContract, useSignMessage } from 'wagmi'
-import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../Web3Config'
+import { readContract } from 'wagmi/actions'
+import { CONTRACT_ADDRESS, CONTRACT_ABI, config } from '../Web3Config'
 
 export function useAuth() {
   const { address, isConnected } = useAccount()
@@ -148,7 +149,7 @@ export function useAuth() {
     if (!username) return false
 
     try {
-      const { data } = await useReadContract({
+      const data = await readContract(config, {
         address: CONTRACT_ADDRESS,
         abi: CONTRACT_ABI,
         functionName: 'isUsernameAvailable',

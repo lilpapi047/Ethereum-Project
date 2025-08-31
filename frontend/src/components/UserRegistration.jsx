@@ -1,30 +1,36 @@
 import React, { useState } from 'react'
 import { UserPlus, Loader2, CheckCircle, AlertCircle } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
+import { useReadContract } from 'wagmi'
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../Web3Config'
 
 export default function UserRegistration() {
   const [username, setUsername] = useState('')
-  const [isCheckingUsername, setIsCheckingUsername] = useState(false)
   const [usernameStatus, setUsernameStatus] = useState(null)
   
-  const { registerUser, isLoading, error, checkUsernameAvailability } = useAuth()
+  const { registerUser, isLoading, error } = useAuth()
 
-  const handleUsernameChange = async (e) => {
-    const value = e.target.value
-    setUsername(value)
-    
-    if (value.length >= 3) {
-      setIsCheckingUsername(true)
-      try {
-        const isAvailable = await checkUsernameAvailability(value)
-        setUsernameStatus(isAvailable ? 'available' : 'taken')
-      } catch (err) {
-        setUsernameStatus('error')
-      }
-      setIsCheckingUsername(false)
+  // Check username availability using wagmi hook
+  const { data: isAvailable, isLoading: isCheckingUsername } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: 'isUsernameAvailable',
+    args: [username],
+    enabled: username.length >= 3
+  })
+
+  // Update status when availability data changes
+  React.useEffect(() => {
+    if (username.length >= 3 && isAvailable !== undefined) {
+      setUsernameStatus(isAvailable ? 'available' : 'taken')
     } else {
       setUsernameStatus(null)
     }
+  }, [isAvailable, username])
+
+  const handleUsernameChange = (e) => {
+    const value = e.target.value
+    setUsername(value)
   }
 
   const handleSubmit = async (e) => {
