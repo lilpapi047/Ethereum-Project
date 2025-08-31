@@ -3,7 +3,7 @@ import { useConnect, useDisconnect, useAccount } from 'wagmi'
 import { Wallet, LogOut } from 'lucide-react'
 
 export default function WalletConnection() {
-  const { connectors, connect, isPending } = useConnect()
+  const { connectors, connect, isPending, error } = useConnect()
   const { disconnect } = useDisconnect()
   const { address, isConnected } = useAccount()
 
@@ -32,6 +32,13 @@ export default function WalletConnection() {
         <Wallet className="w-5 h-5" />
         Connect Your Wallet
       </h3>
+      
+      {error && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+          <p className="text-sm text-red-600">Connection error: {error.message}</p>
+        </div>
+      )}
+      
       <div className="space-y-2">
         {connectors.map((connector) => (
           <button
@@ -43,6 +50,11 @@ export default function WalletConnection() {
             {isPending ? 'Connecting...' : `Connect ${connector.name}`}
           </button>
         ))}
+      </div>
+      
+      <div className="mt-4 text-xs text-gray-600">
+        <p>• Make sure you're on Sepolia testnet</p>
+        <p>• Disable other wallet extensions if you have conflicts</p>
       </div>
     </div>
   )

@@ -34,10 +34,6 @@ export default function InicioSesion() {
       newErrors.wallet = "Ingresa una dirección de billetera válida"
     }
 
-    if (!formData.password.trim()) {
-      newErrors.password = "La contraseña es requerida"
-    }
-
     setErrors(newErrors)
 
     if (Object.keys(newErrors).length === 0) {
@@ -65,13 +61,13 @@ export default function InicioSesion() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 flex items-center justify-center p-4">
         <button
-                onClick={() => navigate("/")}
-                className="text-gray-600 hover:text-gray-900 flex items-center absolute top-4 left-4 z-50 "
-              >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-                </svg>
-                Volver al Inicio
+          onClick={() => navigate("/")}
+          className="text-gray-600 hover:text-gray-900 flex items-center absolute top-4 left-4 z-50 "
+        >
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          Volver al Inicio
         </button>
         <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
           <div className="text-center mb-8">
@@ -144,14 +140,14 @@ export default function InicioSesion() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 flex items-center justify-center p-4">
       <button
-                onClick={() => navigate("/")}
-                className="text-gray-600 hover:text-gray-900 flex items-center absolute top-4 left-4 z-50 "
-              >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-                </svg>
-                Volver al Inicio
-        </button>
+        onClick={() => navigate("/")}
+        className="text-gray-600 hover:text-gray-900 flex items-center absolute top-4 left-4 z-50 "
+      >
+        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Volver al Inicio
+      </button>
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         <div className="text-center mb-8">
           <button
@@ -182,28 +178,12 @@ export default function InicioSesion() {
               type="text"
               value={formData.wallet}
               onChange={(e) => handleInputChange("wallet", e.target.value)}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors ${
-                errors.wallet ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors ${errors.wallet ? "border-red-500" : "border-gray-300"
+                }`}
               placeholder="1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
               disabled={isLoading}
             />
             {errors.wallet && <p className="text-red-500 text-sm mt-1">{errors.wallet}</p>}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
-            <input
-              type="password"
-              value={formData.password}
-              onChange={(e) => handleInputChange("password", e.target.value)}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors ${
-                errors.password ? "border-red-500" : "border-gray-300"
-              }`}
-              placeholder="Tu contraseña"
-              disabled={isLoading}
-            />
-            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
 
           <div className="flex items-center justify-between">
@@ -217,12 +197,6 @@ export default function InicioSesion() {
               <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
                 Recordarme
               </label>
-            </div>
-
-            <div className="text-sm">
-              <a href="#" className="text-emerald-600 hover:text-emerald-700 font-medium">
-                ¿Olvidaste tu contraseña?
-              </a>
             </div>
           </div>
 

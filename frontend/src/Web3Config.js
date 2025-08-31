@@ -1,6 +1,6 @@
 import { http, createConfig } from 'wagmi'
 import { sepolia, goerli } from 'wagmi/chains'
-import { metaMask, walletConnect } from 'wagmi/connectors'
+import { metaMask } from 'wagmi/connectors'
 
 // Contract configuration
 export const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS || '0xce715b667569A1294940e102FEeb001E3312681c'
@@ -69,13 +69,11 @@ export const CONTRACT_ABI = [
 export const config = createConfig({
   chains: [sepolia, goerli],
   connectors: [
-    metaMask(),
-    walletConnect({
-      projectId: import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || 'your-project-id'
-    })
+    metaMask()
+    // Removed WalletConnect to avoid conflicts
   ],
   transports: {
-    [sepolia.id]: http(import.meta.env.VITE_SEPOLIA_RPC_URL || `https://sepolia.infura.io/v3/${import.meta.env.VITE_INFURA_API_KEY}`),
-    [goerli.id]: http(import.meta.env.VITE_GOERLI_RPC_URL || `https://goerli.infura.io/v3/${import.meta.env.VITE_INFURA_API_KEY}`)
+    [sepolia.id]: http(`https://sepolia.infura.io/v3/2a6ff129c08a4138b15d224c7ebd2548`),
+    [goerli.id]: http(`https://goerli.infura.io/v3/2a6ff129c08a4138b15d224c7ebd2548`)
   }
 })
