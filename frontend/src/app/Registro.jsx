@@ -95,36 +95,10 @@ export default function Registro() {
 
 function OrganizationRegister({ navigate }) {
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
     wallet: "",
     rtn: "",
   })
   const [errors, setErrors] = useState({})
-  const [passwordValidation, setPasswordValidation] = useState({
-    length: false,
-    uppercase: false,
-    lowercase: false,
-    number: false,
-    underscore: false,
-  })
-
-  const validatePassword = (password) => {
-    const validation = {
-      length: password.length >= 8,
-      uppercase: /[A-Z]/.test(password),
-      lowercase: /[a-z]/.test(password),
-      number: /\d/.test(password),
-      underscore: /_/.test(password),
-    }
-    setPasswordValidation(validation)
-    return Object.values(validation).every(Boolean)
-  }
-
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailRegex.test(email)
-  }
 
   const validateRTN = (rtn) => {
     return /^\d{14}$/.test(rtn)
@@ -137,24 +111,11 @@ function OrganizationRegister({ navigate }) {
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: "" }))
     }
-
-    // Real-time password validation
-    if (field === "password") {
-      validatePassword(value)
-    }
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
     const newErrors = {}
-
-    if (!validateEmail(formData.email)) {
-      newErrors.email = "Ingresa un correo válido"
-    }
-
-    if (!validatePassword(formData.password)) {
-      newErrors.password = "La contraseña no cumple con los requisitos"
-    }
 
     if (!formData.wallet.trim()) {
       newErrors.wallet = "La dirección de billetera es requerida"
@@ -190,67 +151,6 @@ function OrganizationRegister({ navigate }) {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Correo Electrónico</label>
-            <input
-              type="email"
-              value={formData.email}
-              onChange={(e) => handleInputChange("email", e.target.value)}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors ${
-                errors.email ? "border-red-500" : "border-gray-300"
-              }`}
-              placeholder="organizacion@ejemplo.com"
-            />
-            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
-            <input
-              type="password"
-              value={formData.password}
-              onChange={(e) => handleInputChange("password", e.target.value)}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors ${
-                errors.password ? "border-red-500" : "border-gray-300"
-              }`}
-              placeholder="Tu contraseña segura"
-            />
-            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
-
-            <div className="mt-2 space-y-1">
-              <div
-                className={`text-xs flex items-center ${passwordValidation.length ? "text-green-600" : "text-gray-500"}`}
-              >
-                <span className="mr-2">{passwordValidation.length ? "✓" : "○"}</span>
-                Mínimo 8 caracteres
-              </div>
-              <div
-                className={`text-xs flex items-center ${passwordValidation.uppercase ? "text-green-600" : "text-gray-500"}`}
-              >
-                <span className="mr-2">{passwordValidation.uppercase ? "✓" : "○"}</span>
-                Una letra mayúscula
-              </div>
-              <div
-                className={`text-xs flex items-center ${passwordValidation.lowercase ? "text-green-600" : "text-gray-500"}`}
-              >
-                <span className="mr-2">{passwordValidation.lowercase ? "✓" : "○"}</span>
-                Una letra minúscula
-              </div>
-              <div
-                className={`text-xs flex items-center ${passwordValidation.number ? "text-green-600" : "text-gray-500"}`}
-              >
-                <span className="mr-2">{passwordValidation.number ? "✓" : "○"}</span>
-                Un número
-              </div>
-              <div
-                className={`text-xs flex items-center ${passwordValidation.underscore ? "text-green-600" : "text-gray-500"}`}
-              >
-                <span className="mr-2">{passwordValidation.underscore ? "✓" : "○"}</span>
-                Un guión bajo (_)
-              </div>
-            </div>
-          </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Dirección de Billetera</label>
             <input
@@ -302,36 +202,10 @@ function OrganizationRegister({ navigate }) {
 
 function DonorRegister({ navigate }) {
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
     wallet: "",
     identity: "",
   })
   const [errors, setErrors] = useState({})
-  const [passwordValidation, setPasswordValidation] = useState({
-    length: false,
-    uppercase: false,
-    lowercase: false,
-    number: false,
-    underscore: false,
-  })
-
-  const validatePassword = (password) => {
-    const validation = {
-      length: password.length >= 8,
-      uppercase: /[A-Z]/.test(password),
-      lowercase: /[a-z]/.test(password),
-      number: /\d/.test(password),
-      underscore: /_/.test(password),
-    }
-    setPasswordValidation(validation)
-    return Object.values(validation).every(Boolean)
-  }
-
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailRegex.test(email)
-  }
 
   const validateIdentity = (identity) => {
     return /^\d{13}$/.test(identity)
@@ -343,23 +217,11 @@ function DonorRegister({ navigate }) {
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: "" }))
     }
-
-    if (field === "password") {
-      validatePassword(value)
-    }
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
     const newErrors = {}
-
-    if (!validateEmail(formData.email)) {
-      newErrors.email = "Ingresa un correo válido"
-    }
-
-    if (!validatePassword(formData.password)) {
-      newErrors.password = "La contraseña no cumple con los requisitos"
-    }
 
     if (!formData.wallet.trim()) {
       newErrors.wallet = "La dirección de billetera es requerida"
@@ -379,6 +241,15 @@ function DonorRegister({ navigate }) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-4">
+      <button
+                onClick={() => navigate("/")}
+                className="text-gray-600 hover:text-gray-900 flex items-center absolute top-4 left-4 z-50 "
+              >
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Volver al Inicio
+        </button>
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Registro de Donante</h1>
@@ -386,67 +257,6 @@ function DonorRegister({ navigate }) {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Correo Electrónico</label>
-            <input
-              type="email"
-              value={formData.email}
-              onChange={(e) => handleInputChange("email", e.target.value)}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-                errors.email ? "border-red-500" : "border-gray-300"
-              }`}
-              placeholder="tu@ejemplo.com"
-            />
-            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
-            <input
-              type="password"
-              value={formData.password}
-              onChange={(e) => handleInputChange("password", e.target.value)}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-                errors.password ? "border-red-500" : "border-gray-300"
-              }`}
-              placeholder="Tu contraseña segura"
-            />
-            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
-
-            <div className="mt-2 space-y-1">
-              <div
-                className={`text-xs flex items-center ${passwordValidation.length ? "text-green-600" : "text-gray-500"}`}
-              >
-                <span className="mr-2">{passwordValidation.length ? "✓" : "○"}</span>
-                Mínimo 8 caracteres
-              </div>
-              <div
-                className={`text-xs flex items-center ${passwordValidation.uppercase ? "text-green-600" : "text-gray-500"}`}
-              >
-                <span className="mr-2">{passwordValidation.uppercase ? "✓" : "○"}</span>
-                Una letra mayúscula
-              </div>
-              <div
-                className={`text-xs flex items-center ${passwordValidation.lowercase ? "text-green-600" : "text-gray-500"}`}
-              >
-                <span className="mr-2">{passwordValidation.lowercase ? "✓" : "○"}</span>
-                Una letra minúscula
-              </div>
-              <div
-                className={`text-xs flex items-center ${passwordValidation.number ? "text-green-600" : "text-gray-500"}`}
-              >
-                <span className="mr-2">{passwordValidation.number ? "✓" : "○"}</span>
-                Un número
-              </div>
-              <div
-                className={`text-xs flex items-center ${passwordValidation.underscore ? "text-green-600" : "text-gray-500"}`}
-              >
-                <span className="mr-2">{passwordValidation.underscore ? "✓" : "○"}</span>
-                Un guión bajo (_)
-              </div>
-            </div>
-          </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Dirección de Billetera</label>
             <input

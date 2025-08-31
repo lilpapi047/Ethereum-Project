@@ -1,0 +1,182 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\perri\\OneDrive\\Desktop\\Hackathon\\Ethereum-Project\\contracts\\1_Storage.sol": {
+      "lastModificationDate": 1756590367954,
+      "contentHash": "ccc2be27c965fbb469e42dc76bd3f873",
+      "sourceName": "contracts/1_Storage.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.8.2 <0.9.0"
+      ],
+      "artifacts": [
+        "Storage"
+      ]
+    },
+    "C:\\Users\\perri\\OneDrive\\Desktop\\Hackathon\\Ethereum-Project\\contracts\\2_Owner.sol": {
+      "lastModificationDate": 1756590367954,
+      "contentHash": "f86efb6460a419f0ca056ef28763c405",
+      "sourceName": "contracts/2_Owner.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "hardhat/console.sol"
+      ],
+      "versionPragmas": [
+        ">=0.7.0 <0.9.0"
+      ],
+      "artifacts": [
+        "Owner"
+      ]
+    },
+    "C:\\Users\\perri\\OneDrive\\Desktop\\Hackathon\\Ethereum-Project\\node_modules\\hardhat\\console.sol": {
+      "lastModificationDate": 1756645023742,
+      "contentHash": "681c532e816169606d13a5fe8b475074",
+      "sourceName": "hardhat/console.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console"
+      ]
+    },
+    "C:\\Users\\perri\\OneDrive\\Desktop\\Hackathon\\Ethereum-Project\\contracts\\3_Ballot.sol": {
+      "lastModificationDate": 1756590367955,
+      "contentHash": "d871d823553b1653daa8a57385457a1b",
+      "sourceName": "contracts/3_Ballot.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.7.0 <0.9.0"
+      ],
+      "artifacts": [
+        "Ballot"
+      ]
+    },
+    "C:\\Users\\perri\\OneDrive\\Desktop\\Hackathon\\Ethereum-Project\\contracts\\UserAuthentication.sol": {
+      "lastModificationDate": 1756642452382,
+      "contentHash": "b7cf7db5f98a6aaa8309a2be751c1db5",
+      "sourceName": "contracts/UserAuthentication.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.19"
+      ],
+      "artifacts": [
+        "UserAuthentication"
+      ]
+    }
+  }
+}
