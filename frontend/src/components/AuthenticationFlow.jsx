@@ -38,12 +38,6 @@ export default function AuthenticationFlow() {
   if (!isRegistered) {
     return (
       <div className="space-y-4">
-        <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md">
-          <div className="flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-yellow-600" />
-            <span className="text-sm text-yellow-800">Account not found. Please register to continue.</span>
-          </div>
-        </div>
         <UserRegistration />
       </div>
     )
