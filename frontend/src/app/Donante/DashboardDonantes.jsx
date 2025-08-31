@@ -107,7 +107,8 @@ export default function DashboardDonantes(){
                   <div 
                   key={org.id}
                   onClick={() => handleOrganizationClick(org.id)}
-                  className="text-emerald-600 font-medium text-sm rounded-sm p-1 hover:bg-gray-100 hover:font-bold transition-colors">Ver proyectos →</div>
+                  className="text-emerald-600 font-medium text-sm rounded-sm p-1 hover:bg-gray-100 hover:font-bold transition-colors">
+                    Ver proyectos →</div>
                 </div>
               </div>
             </div>
